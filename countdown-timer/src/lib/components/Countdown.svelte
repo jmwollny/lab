@@ -19,7 +19,7 @@
 	 */
 
 	/** @type {Props} */
-	let { date = '', colour = 'white', name = '' } = $props();
+	let { date = '', colour = 'lightgreen', name = '' } = $props();
 
 	/**
 	 * @type {number | undefined}
@@ -51,12 +51,15 @@
 	const calculateTimeLeft = () => {
 		const difference = dueDate.getTime() - new Date().getTime();
 		if (difference > 0) {
+			const msPerMinute = 1000 * 60;
+			const msPerHour = msPerMinute * 60;
+			const msPerDay = msPerHour * 24;
 			return {
 				total: difference,
-				days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-				hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-				minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
-				seconds: Math.floor((difference % (1000 * 60)) / 1000)
+				days: Math.floor(difference / msPerDay),
+				hours: Math.floor((difference % msPerDay) / msPerHour),
+				minutes: Math.floor((difference % msPerHour) / msPerMinute),
+				seconds: Math.floor((difference % msPerMinute) / 1000)
 			};
 		} else {
 			expired = true;
@@ -76,9 +79,17 @@
 			return 'Delete';
 		}
 	};
+	const getTitle = () => {
+		if (name) {
+			return `${name} - ${formattedDate(dueDate, false)}`;
+		} else {
+			return formattedDate(dueDate, false);
+		}
+	};
+
 	const getBackgroundColour = () => {
 		if (expired) {
-			return 'red';
+			return 'salmon';
 		} else {
 			return colour;
 		}
@@ -99,7 +110,7 @@
 {#if loaded && !closed}
 	<div class="countdown" style="--tile-colour: {getBackgroundColour()}">
 		<div class="title">
-			{name} - {formattedDate(dueDate, false)}
+			{getTitle()}
 			<button onclick={closeCountdown}>{getButtonLabel()}</button>
 		</div>
 
