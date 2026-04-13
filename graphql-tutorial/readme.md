@@ -1,6 +1,6 @@
 # 🧛 GraphQL Quick Start
 
-A lightweight tutorial to get you up and running with GraphQL basics using a dataset of 157 classic Hammer Studios films.
+A lightweight tutorial to get you up and running with GraphQL basics using a dataset classic Hammer Studios films. [View the full list of 157 films here](./films.md)
 
 ## 🛠️ Setup your environment
 
