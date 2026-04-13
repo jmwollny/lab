@@ -32,7 +32,6 @@
 
 	const dueDate = new Date(date);
 	const closeCountdown = () => {
-		clearInterval(timerInterval);
 		closed = true;
 	};
 	const formattedDate = (/** @type {Date} */ date, short = false) => {
@@ -55,7 +54,7 @@
 			const msPerMinute = 1000 * 60;
 			const msPerHour = msPerMinute * 60;
 			const msPerDay = msPerHour * 24;
-			timeLeft = {
+			return {
 				total: difference,
 				days: Math.floor(difference / msPerDay),
 				hours: Math.floor((difference % msPerDay) / msPerHour),
@@ -64,7 +63,7 @@
 			};
 		} else {
 			expired = true;
-			timeLeft = {
+			return {
 				total: 0,
 				days: 0,
 				hours: 0,
@@ -97,7 +96,7 @@
 	};
 	onMount(() => {
 		timerInterval = setInterval(() => {
-			calculateTimeLeft();
+			timeLeft = calculateTimeLeft();
 			loaded = true;
 			if (expired) {
 				clearInterval(timerInterval);
