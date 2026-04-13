@@ -16,6 +16,9 @@ npm install
 
 ```bash
 node index.js
+```
+
+```bash
 🚀 Server ready at http://localhost:4000/
 ```
 
@@ -40,6 +43,7 @@ curl --request POST \
 ```
 
 3. Filter by Year (Using Variables)
+
 This demonstrates the best practice of separating the query from the data.
 
 ```bash
