@@ -9,9 +9,14 @@ const typeDefs = gql`
     watched: Boolean
   }
 
+  input FilmFilter {
+    year_gte: Int
+    year_lte: Int
+  }
+
   type Query {
     # Return a list of films, optionally filtered by watched status, year, or search term in the title
-    films(watched: Boolean, year: Int, searchTerm: String): [Film]
+    films(watched: Boolean, year: Int, searchTerm: String, where: FilmFilter): [Film]
     film(id: ID!): Film
   }
 `;
@@ -192,6 +197,16 @@ const resolvers = {
       // Year filter
       if (args.year) {
         filteredFilms = filteredFilms.filter(f => f.year === args.year);
+      }
+
+      // Date range filter
+      if (args.where) {
+        if (args.where.year_gte) {
+          filteredFilms = filteredFilms.filter(f => f.year >= args.where.year_gte);
+        }
+        if (args.where.year_lte) {
+          filteredFilms = filteredFilms.filter(f => f.year <= args.where.year_lte);
+        }
       }
 
       // Search filter
