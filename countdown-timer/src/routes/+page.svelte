@@ -1,25 +1,6 @@
 <script>
 	import Countdown from '$lib/components/Countdown.svelte';
 	import { onMount } from 'svelte';
-	// let countdownTimes = [
-	// 	{
-	// 		name: 'Snowdon trip',
-	// 		date: '2025-05-22:18:00'
-	// 	},
-	// 	{
-	// 		name: "Mia's birthday",
-	// 		date: '2026-01-18:00:00'
-	// 	},
-	// 	{
-	// 		name: "Jake's birthday",
-	// 		date: '2025-03-16:18:00'
-	// 	},
-	// 	{
-	// 		name: "Rowena's birthday",
-	// 		date: '2025-05-22:18:00',
-	// 		colour: 'fuchsia'
-	// 	}
-	// ];
 	/** @type {{id: number, name?: string; date: string; colour?: string; }[]}  */
 	let countdownTimes = [];
 	onMount(async () => {
