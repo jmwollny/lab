@@ -1,6 +1,10 @@
-# 🧛 GraphQL Quick Start
+# # 🧛 GraphQL tutorial - Parts 1 and 2
 
-A lightweight tutorial to get you up and running with GraphQL querying basics using a dataset of classic Hammer Studios films. [View the full list of 157 films here](./films.md)
+A three part tutorial to get you up and running with GraphQL querying basics using a dataset of classic Hammer Studios films. [View the full list of 157 films here](./films.md). Part 2 will introduce ways of mutating the data in order to add, update and delete films.
+
+You can find the tutorial blog posts here:
+- Part 1 - introduction to GraphQL and how to query data - https://tapir.me.uk/?p=469
+- Part 2 - how to add, update and remove data - https://tapir.me.uk/?p=503
 
 ## 🛠️ Setup your environment
 
