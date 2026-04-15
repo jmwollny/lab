@@ -1,4 +1,4 @@
-# 🧛 GraphQL tutorial - Part 3 - persisting data using MongbDB
+# 🧛 GraphQL tutorial - Part 3 - persisting data using MongoDB
 
 A tutorial to show how to persist the film list in a database.
 
