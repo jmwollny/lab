@@ -201,18 +201,6 @@ def get_camping_and_woods(lat, lon, radius_meters=2000):
     lon = float(lon)
     
     overpass_url = "https://overpass-api.de/api/interpreter"
-    
-    oldquery1 = f"""
-    [out:json][timeout:90];
-    (
-      node["tourism"~"camp_site|wilderness_hut"](around:{radius_meters},{lat},{lon});
-      way["tourism"~"camp_site|wilderness_hut"](around:{radius_meters},{lat},{lon});
-      node["natural"~"wood|tree_group|scrub"](around:{radius_meters},{lat},{lon});
-      way["natural"~"wood|scrub"](around:{radius_meters},{lat},{lon});
-      way["landuse"="forest"](around:{radius_meters},{lat},{lon});
-    );
-    out center bb;
-    """
 
     query = f"""
     [out:json][timeout:90];
@@ -245,34 +233,6 @@ def get_camping_and_woods(lat, lon, radius_meters=2000):
     (
     .targets;
     .redflags;
-    );
-    out center bb;
-    """
-
-    oldquery2 = f"""
-    [out:json][timeout:90];
-    (
-    // === TARGET SITES ===
-    way["natural"="wood"](around:{radius_meters},{lat},{lon});
-    way["landuse"="forest"](around:{radius_meters},{lat},{lon});
-    node["natural"~"wood|tree_group"](around:{radius_meters},{lat},{lon});
-
-    // === RED FLAGS: CRITICAL (Stay Away) ===
-    way["amenity"~"school|prison|police|cemetery|hospital"](around:{radius_meters},{lat},{lon});
-    way["landuse"~"military|allotments|quarry|residential|farmyard"](around:{radius_meters},{lat},{lon});
-    way["leisure"~"pitch|stadium|golf_course|playground"](around:{radius_meters},{lat},{lon});
-
-    // === BARRIERS (Access & Difficulty) ===
-    node["barrier"](around:{radius_meters},{lat},{lon});
-    way["barrier"](around:{radius_meters},{lat},{lon});
-
-    // === RED FLAGS: NUISANCE (Noise/People) ===
-    node["amenity"~"pub|restaurant|parking"](around:{radius_meters},{lat},{lon});
-    way["man_made"~"works|sewage_works|substation"](around:{radius_meters},{lat},{lon});
-    way["railway"="rail"](around:{radius_meters},{lat},{lon});
-    
-    // === BUILDINGS (General Encroachment) ===
-    way["building"](around:{radius_meters},{lat},{lon});
     );
     out center bb;
     """

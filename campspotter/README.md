@@ -13,14 +13,15 @@ You will need a mapbox API key. Create a `.env` file in the main directory and a
 Register at mapbox then go to https://console.mapbox.com/account/access-tokens/ to create an access token.
 
 ## Running the Svelte front end
-Remember to run `npm install` befire running the UI
+Remember to run `npm install` before running the UI
 ```bash
 npm run dev
 ```
 
 ## Running the backend
 
-Install uv (macos)- `brew install uv`
+Install uv (macos)- `brew install uv`.
+
 Now sync the project using `uv synv`. This will synchronize the virtual environment with its dependencies, ensuring the environment exactly matches the uv.lock file. It installs, updates, or removes packages to reflect the lock file, creating a deterministic, identical environment for all users. It also builds the project itself and handles optional dependencies.
 
 ### Backend environment
@@ -43,12 +44,12 @@ uv run python server.py
 ```
 
 ## How to use
-1. Load a GPX file. I have included the GB divide file here - /public/GBDIVIDE_v400.gpx
-2. Use the slider the where you want to search i.e. the number of kilometres along the route
-3. Optionally set the search radius. The default is 500m. Note: larger values will slow things down as the OS Maps API will returns a loit more data
-4. Click 'Search this area'
+1. Load a GPX file. I have included the GB divide file here - /public/GBDIVIDE_v400.gpx.
+2. Use the slider to set the distance where you want to search i.e. the number of kilometres along the route.
+3. Optionally set the search radius. The default is 500m. Note: larger values will slow things down as the OS Maps API will returns a lot more data.
+4. Click 'Search this area'.
 
-This will get the data from OS StreetMap then return the road and water data from Overpass. Finally we will call the LLM for the best camping criteria before passing that into another LLM prompt to return the top 3 best sites for camping along the with OSM polygons.
+This will get the data from OS StreetMap then return the road and water data from Overpass. Finally we will call the LLM for the best camping criteria before passing that into another LLM prompt to return the top 3 best sites for camping along with the OSM polygons.
 
 The user can then click these to show where they are on the map!
 
