@@ -20,9 +20,7 @@ npm run dev
 
 ## Running the backend
 
-Install uv (macos)- `brew install uv`.
-
-Now sync the project using `uv synv`. This will synchronize the virtual environment with its dependencies, ensuring the environment exactly matches the uv.lock file. It installs, updates, or removes packages to reflect the lock file, creating a deterministic, identical environment for all users. It also builds the project itself and handles optional dependencies.
+See `/server/README.MD` for information on how to install the server dependencies.
 
 ### Backend environment
 Create a `server/.env` file with any keys you need for the LLM and Overpass usage, for example:
