@@ -1,4 +1,4 @@
-# This is an app that finds suitable camping spots along a route
+# This is an app that uses AI to find suitable camping spots along a route
 Currently I am running the LLM locally using Ollama. 
 This is run using the command 
 ```bash
