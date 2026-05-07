@@ -1,0 +1,4 @@
+# Create a file named 'safe-gemma'
+# then run - ollama create safe-gemma -f safe-gemma
+FROM gemma4:e2b
+PARAMETER num_ctx 8192
