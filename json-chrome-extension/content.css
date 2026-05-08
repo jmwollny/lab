@@ -1,0 +1,24 @@
+body {
+   color: #111; 
+   font-family: 'Helvetica Neue', sans-serif; font-size: 14px; font-weight: 500; 
+}
+
+pre {
+   background-color: ghostwhite;
+   border: 1px solid silver;
+   padding: 10px;
+   margin: 20px;
+   overflow: auto;
+   height:90%;
+}
+
+.json-key {
+   color: brown;
+   }
+.json-value-int {
+   color: navy;
+   }
+.json-value-str {
+   color: olive;
+   font-style: italic;
+}
