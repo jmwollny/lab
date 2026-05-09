@@ -1,0 +1,26 @@
+:root {
+  font-family: system-ui, sans-serif;
+  color: #0f172a;
+  background: #eef2ff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #eef2ff;
+}
+
+#app {
+  width: 100%;
+}
+
+.card {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+}
