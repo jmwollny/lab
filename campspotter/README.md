@@ -44,10 +44,16 @@ uv run python server.py
 ## How to use
 1. Load a GPX file. I have included the GB divide file here - /public/GBDIVIDE_v400.gpx.
 2. Use the slider to set the distance where you want to search i.e. the number of kilometres along the route.
-3. Optionally set the search radius. The default is 500m. Note: larger values will slow things down as the OS Maps API will returns a lot more data.
+3. Optionally set the search radius. The default is 500m. Note: larger values will slow things down as the OS Maps API will return a lot more data.
 4. Click 'Search this area'.
 
-This will get the data from OS StreetMap then return the road and water data from Overpass. Finally we will call the LLM for the best camping criteria before passing that into another LLM prompt to return the top 3 best sites for camping along with the OSM polygons.
+The following processes then happen:
+  1. Get the list of possible sites(woods, forests) and red flags(buildings, schools, railways etc.) from Open StreetMap (OSM) - scout_agent_run
+  2. The list is summarised and extra information is calculated such as size, distance from the track, distance to nearby red flags
+  3. Now the top 10 sites(sorted by size) are enriched with extra information such as the distance to nearby roads or rivers
+  4. We ask the LLM to return a list of wild camping criteria based on best practices
+  5. This is where the magic happens. We pass the criteria and the top 10 sites along with a carefully crafted prompt to the LLM. This returns three ids
+  6. For the top 3 site ids we fetch the full polygons from OSM. At the end of each stage we update the UI using a websocket. This keeps the UI responsive and provides feedback as to the state of the search query.
 
 The user can then click these to show where they are on the map!
 
