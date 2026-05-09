@@ -3,3 +3,4 @@
 2. countdown-timer - a svelte front end and node.js express CRUD server to allow timers to be created/deleted/viewed
 3. graphql-tutorial - companion repos for my GraphQL blog series - Part 1 is [here](https://tapir.me.uk/?p=469)
 4. json-chrome-extension - Chrome extension to format any JSON file. The associated blog post can be found [here](https://tapir.me.uk/?p=129)
+5. examtracker - Keeps track of and provides metrics on upcoming exams
