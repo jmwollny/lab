@@ -57,3 +57,5 @@ Once you have done this run the frontend app to display the timers.
 cd countdown-timer
 npm run dev
 ```
+
+![image info](public/screenshot.png)
