@@ -1,44 +1,59 @@
-# Quick start
-1. Open a terminal
-2. npx sv create --template minimal --types ts countdown-timer
+# Countdown timer
+This application is the UI that uses the countdown-timer-server to read, display and update countdown timers. 
+
+To get started pull this repo, then install the dependencies
+```bash
+npm install
 ```
-┌  Welcome to the Svelte CLI! (v0.8.3)
-│
-◆  Project created
-│
-◇  What would you like to add to your project? (use arrow keys / space bar)
-│  prettier, eslint
-│
-◆  Successfully setup add-ons
-│
-◇  Which package manager do you want to install dependencies with?
-│  npm
-│
-◆  Successfully installed dependencies
-│
-◇  Successfully formatted modified files
-│
-◇  Project next steps ─────────────────────────────────────────────────────╮
-│                                                                          │
-│  1: cd countdown-timer                                                   │
-│  2: git init && git add -A && git commit -m "Initial commit" (optional)  │
-│  3: npm run dev -- --open                                                │
-│                                                                          │
-│  To close the dev server, hit Ctrl-C                                     │
-│                                                                          │
-│  Stuck? Visit us at https://svelte.dev/chat                              │
-│                                                                          │
-├──────────────────────────────────────────────────────────────────────────╯
-│
-└  You're all set!
+
+Now pull the coundown-time-server repo and then:
+```bash
+npm install
+up to date, audited 67 packages in 622ms
+node index.js
+Server listening on port 3000
 ```
-3. npm run dev -- --open
-4. A browser tab will open with a skeleton Svelte app.
-5. You can verify your project using
-npx sv check
+
+I have provided some example scripts to create sample timers. These can be found in the `/scripts` directory. 
+I suggest running the timer creation script
+```bash
+sh ./create-timers.sh
+{"id":1,"name":"Leave Gamma","date":"2025-11-28:17:30","colour":"MediumOrchid"}{"id":2,"name":"Mia's birthday","date":"2026-01-18:00:00"}{"id":3,"name":"Jake's birthday","date":"2026-03-16:00:00"}{"id":4,"name":"Rowena's birthday","date":"2026-09-13:00:00","colour":"fuchsia"}%
 ```
-====================================
-Loading svelte-check in workspace: /Users/jonathanwollny/code/lab/countdown-timer
-Getting Svelte diagnostics...
-====================================
-svelte-check found 0 errors and 0 warnings
+You can check if this was successful by running
+```bash
+jonathanwollny@Jonathans-MacBook-Air-2 scripts % sh ./get-timers.sh
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   281  100   281    0     0  99539      0 --:--:-- --:--:-- --:--:-- 93666
+[
+  {
+    "id": 1,
+    "name": "Leave Gamma",
+    "date": "2025-11-28:17:30",
+    "colour": "MediumOrchid"
+  },
+  {
+    "id": 2,
+    "name": "Mia's birthday",
+    "date": "2026-01-18:00:00"
+  },
+  {
+    "id": 3,
+    "name": "Jake's birthday",
+    "date": "2026-03-16:00:00"
+  },
+  {
+    "id": 4,
+    "name": "Rowena's birthday",
+    "date": "2026-09-13:00:00",
+    "colour": "fuchsia"
+  }
+]
+```
+
+Once you have done this run the frontend app to display the timers.
+```bash
+cd countdown-timer
+npm run dev
+```
