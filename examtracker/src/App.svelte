@@ -15,19 +15,34 @@
   let now = new Date();
 
   function formatCountdown(exam, currentTime) {
-    const target = getCompletionThreshold(exam);
-    const diff = target - currentTime;
-    if (diff <= 0) return 'Done';
+    let milliSeconds = metrics.msUntilNextExam;
 
-    const days = Math.floor(diff / 86400000);
-    const hours = Math.floor((diff % 86400000) / 3600000);
-    const mins = Math.floor((diff % 3600000) / 60000);
-    return `${days}d ${hours}h ${mins}m`;
+    let days = Math.floor(milliSeconds / (86400 * 1000));
+    milliSeconds -= days * (86400 * 1000);
+    let hours = Math.floor(milliSeconds / (60 * 60 * 1000));
+    milliSeconds -= hours * (60 * 60 * 1000);
+    let minutes = Math.floor(milliSeconds / (60 * 1000));
+    const formatted = `${days}d ${hours}h ${minutes}m`;
+    return formatted;
   }
 
-  $: countdownText = metrics.nextExam
-    ? formatCountdown(metrics.nextExam, now)
-    : '';
+  function formatDaysUntilNextExam() {
+    const days = metrics.msUntilNextExam / (1000 * 60 * 60 * 24);
+    const result = Number(days.toFixed(0));
+
+    let formattedResult = 'N/A';
+    if (result === 0) {
+      formattedResult = '< 1 day';
+    } else if (result > 1) {
+      formattedResult = `${result} days`;
+    } else if(result ===1) {
+      formattedResult = '1 day';
+    }
+
+    return formattedResult;
+  }
+
+  $: countdownText = metrics.nextExam ? formatCountdown(metrics, now) : '';
 
   onMount(() => {
     const saved = localStorage.getItem('exams');
@@ -145,7 +160,7 @@
           </div>
           <div>
             <dt>Days until next exam</dt>
-            <dd>{metrics.nextExam ? metrics.daysUntilNextExam : 'N/A'}</dd>
+            <dd>{metrics.nextExam ? formatDaysUntilNextExam(): 'N/A'}</dd>
           </div>
           <div>
             <dt>Percentage complete</dt>

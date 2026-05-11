@@ -1,7 +1,11 @@
-import { expect, test, vi, beforeEach, afterEach} from 'vitest'
-import { render, screen, fireEvent, cleanup } from '@testing-library/svelte'
-import App from './App.svelte'
-import { getExamMetrics, sortExams, getCompletionThreshold } from './lib/metrics.js'
+import { expect, test, vi, beforeEach, afterEach } from 'vitest';
+import { render, screen, fireEvent, cleanup } from '@testing-library/svelte';
+import App from './App.svelte';
+import {
+  getExamMetrics,
+  sortExams,
+  getCompletionThreshold,
+} from './lib/metrics.js';
 
 const addSubject = async (subject, date, isPM) => {
   const subjectInput = screen.getByLabelText(/Subject/i);
@@ -18,8 +22,8 @@ const addSubject = async (subject, date, isPM) => {
 };
 
 beforeEach(() => {
-  localStorage.clear()
-  vi.useRealTimers()
+  localStorage.clear();
+  vi.useRealTimers();
 });
 
 afterEach(() => {
@@ -35,22 +39,24 @@ test('sortExams orders exams by ascending date', () => {
   ];
 
   const sorted = sortExams(exams);
-  expect(sorted.map((exam) => exam.subject)).toEqual(['Math AM', 'Math PM', 'Biology AM', 'English AM']);
-})
+  expect(sorted.map((exam) => exam.subject)).toEqual([
+    'Math AM',
+    'Math PM',
+    'Biology AM',
+    'English AM',
+  ]);
+});
 
 test('getExamMetrics returns next exam and completion values', () => {
-  const today = new Date('2026-05-01T09:00:00');
-  const exams = [
-    { subject: 'History', date: '2026-04-25', isPM: false },
-    { subject: 'Maths', date: '2026-05-01', isPM: false }
-  ];
+  const today = new Date('2026-05-11T07:50:00');
+  const exams = [{ subject: 'English', date: '2026-05-11', isPM: false }];
 
   const metrics = getExamMetrics(exams, today);
-  expect(metrics.nextExam.subject).toBe('Maths');
-  expect(metrics.daysUntilNextExam).toBe(0);
-  expect(Math.round(metrics.percentComplete)).toBe(50);
+  expect(metrics.nextExam.subject).toBe('English');
+  expect(metrics.msUntilNextExam).toBe(11400000);
+  expect(Math.round(metrics.percentComplete)).toBe(0);
   expect(metrics.daysUntilAllFinished).toBe(1);
-})
+});
 
 test('getCompletionThreshold returns correct dates for AM and PM', () => {
   const amExam = { date: '2026-05-01', isPM: false };
@@ -59,24 +65,24 @@ test('getCompletionThreshold returns correct dates for AM and PM', () => {
   const amThreshold = getCompletionThreshold(amExam);
   const pmThreshold = getCompletionThreshold(pmExam);
 
-  expect(amThreshold.getHours()).toBe(12);
+  expect(amThreshold.getHours()).toBe(11);
   expect(pmThreshold.getHours()).toBe(15);
-})
+});
 
 test('getExamMetrics respects AM/PM completion thresholds', () => {
   const examDate = '2026-05-01';
   const exams = [
-    { subject: 'AM Exam', date: examDate, isPM: false }, // Done after 12:00
-    { subject: 'PM Exam', date: examDate, isPM: true }   // Done after 15:00
+    { subject: 'AM Exam', date: examDate, isPM: false }, // Done after 11:00
+    { subject: 'PM Exam', date: examDate, isPM: true }, // Done after 15:00
   ];
 
-  // 1. At 11:59 AM, none are done
-  const morning = new Date(`${examDate}T11:59:00`);
+  // At 10:59 AM, none are done
+  const morning = new Date(`${examDate}T10:59:00`);
   let metrics = getExamMetrics(exams, morning);
   expect(metrics.percentComplete).toBe(0);
 
-  // 2. At 12:01 PM, AM exam is done (50%)
-  const afternoon = new Date(`${examDate}T12:01:00`);
+  // 2. At 11:01 PM, AM exam is done (50%)
+  const afternoon = new Date(`${examDate}T11:01:00`);
   metrics = getExamMetrics(exams, afternoon);
   expect(metrics.percentComplete).toBe(50);
 
@@ -84,24 +90,24 @@ test('getExamMetrics respects AM/PM completion thresholds', () => {
   const lateAfternoon = new Date(`${examDate}T15:01:00`);
   metrics = getExamMetrics(exams, lateAfternoon);
   expect(metrics.percentComplete).toBe(100);
-})
+});
 
 test('getExamMetrics calculates "Days until all finished" based on the last exam', () => {
   const today = new Date('2026-05-01T09:00:00');
   const exams = [
-    { subject: 'First', date: '2026-05-05', isPM: false }, 
-    { subject: 'Last', date: '2026-05-11', isPM: false }
+    { subject: 'First', date: '2026-05-05', isPM: false },
+    { subject: 'Last', date: '2026-05-11', isPM: false },
   ];
 
   const metrics = getExamMetrics(exams, today);
-  // May 1st to May 11th is 10 days. 
+  // May 1st to May 11th is 10 days.
   expect(metrics.daysUntilAllFinished).toBe(11);
 
   // Verify it handles the "all done" state
   const afterAllDone = new Date('2026-05-12T00:00:00');
   const finishedMetrics = getExamMetrics(exams, afterAllDone);
   expect(finishedMetrics.daysUntilAllFinished).toBe(0);
-})
+});
 
 test('marks exam as done in the UI after threshold', async () => {
   const examDate = '2026-05-01';
@@ -109,7 +115,7 @@ test('marks exam as done in the UI after threshold', async () => {
   vi.useFakeTimers();
   vi.setSystemTime(new Date(`${examDate}T17:00:00`));
 
-  const {container} = render(App);
+  const { container } = render(App);
 
   await addSubject('Biology', examDate, true);
 
@@ -120,7 +126,7 @@ test('marks exam as done in the UI after threshold', async () => {
 
   const completedExam = container.querySelector('.done');
   expect(completedExam).toBeTruthy();
-})
+});
 
 test('adds and removes an exam from the UI', async () => {
   const examDate = '2026-08-15';
@@ -128,7 +134,9 @@ test('adds and removes an exam from the UI', async () => {
 
   render(App);
 
-  expect(screen.queryByText('No exams scheduled yet. Add your first subject above!')).toBeTruthy();
+  expect(
+    screen.queryByText('No exams scheduled yet. Add your first subject above!'),
+  ).toBeTruthy();
 
   await addSubject('Chemistry', examDate, true);
 
@@ -138,4 +146,49 @@ test('adds and removes an exam from the UI', async () => {
   await fireEvent.click(removeButton);
 
   expect(screen.queryByRole('cell', { name: 'Chemistry' })).toBeNull();
-})
+});
+
+test('date until next exam is formatted correctly = less than a day', async () => {
+  const timeNow = '2026-05-11';
+  const examDate = '2026-05-11';
+  vi.useFakeTimers();
+  vi.setSystemTime(new Date(`${timeNow}T08:00:00`));
+  render(App);
+
+  // Add PM exam, so it starts at 1pm and is done after 3pm
+  await addSubject('English', examDate, true);
+
+  expect(screen.getByRole('cell', { name: 'English' })).toBeTruthy();
+  expect(screen.getByText('< 1 day')).toBeTruthy();
+  expect(screen.getByText('0d 7h 0m')).toBeTruthy();
+});
+
+test('date until next exam is formatted correctly - one day', async () => {
+  const timeNow = '2026-05-11';
+  const examDate = '2026-05-12';
+  vi.useFakeTimers();
+  vi.setSystemTime(new Date(`${timeNow}T08:00:00`));
+  render(App);
+
+  // Add PM exam, so it starts at 1pm and is done after 3pm
+  await addSubject('English', examDate, true);
+
+  expect(screen.getByRole('cell', { name: 'English' })).toBeTruthy();
+  expect(screen.getByText('1 day')).toBeTruthy();
+  expect(screen.getByText('1d 7h 0m')).toBeTruthy();
+});
+
+test('date until next exam is formatted correctly - more than a day', async () => {
+  const timeNow = '2026-05-11';
+  const examDate = '2026-05-13';
+  vi.useFakeTimers();
+  vi.setSystemTime(new Date(`${timeNow}T08:00:00`));
+  render(App);
+
+  // Add PM exam, so it starts at 1pm and is done after 3pm
+  await addSubject('English', examDate, true);
+
+  expect(screen.getByRole('cell', { name: 'English' })).toBeTruthy();
+  expect(screen.getByText('2 days')).toBeTruthy();
+  expect(screen.getByText('2d 7h 0m')).toBeTruthy();
+});
