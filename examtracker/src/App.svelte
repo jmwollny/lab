@@ -170,6 +170,10 @@
             <dt>Days until all exams finished</dt>
             <dd>{sortedExams.length ? metrics.daysUntilAllFinished : 'N/A'}</dd>
           </div>
+          <div>
+            <dt>Exams completed</dt>
+            <dd>{sortedExams.length ? metrics.completedExamCount : '0'}</dd>
+          </div>
         </div>
       </section>
     </div>

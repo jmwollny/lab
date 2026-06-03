@@ -49,13 +49,17 @@ test('sortExams orders exams by ascending date', () => {
 
 test('getExamMetrics returns next exam and completion values', () => {
   const today = new Date('2026-05-11T07:50:00');
-  const exams = [{ subject: 'English', date: '2026-05-11', isPM: false }];
+  const exams = [
+    { subject: 'Maths', date: '2026-05-01', isPM: false },
+    { subject: 'English', date: '2026-05-11', isPM: false }
+  ];
 
   const metrics = getExamMetrics(exams, today);
   expect(metrics.nextExam.subject).toBe('English');
   expect(metrics.msUntilNextExam).toBe(11400000);
-  expect(Math.round(metrics.percentComplete)).toBe(0);
+  expect(Math.round(metrics.percentComplete)).toBe(50);
   expect(metrics.daysUntilAllFinished).toBe(1);
+  expect(metrics.completedExamCount).toBe(1);
 });
 
 test('getCompletionThreshold returns correct dates for AM and PM', () => {
